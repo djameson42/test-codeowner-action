@@ -1,0 +1,9 @@
+name: 'Codeowner Action'
+description: 'Codeowner Action'
+runs:
+  using: 'node12'
+  main: 'dist/index.js'
+inputs:
+  access-token:
+    description: Github access token
+    required: true

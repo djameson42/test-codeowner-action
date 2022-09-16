@@ -12,3 +12,6 @@ jobs:
         shell: bash
         run: |
           echo '${{ toJSON(github) }}'
+
+      - name: Codeowner action
+        uses: ./.github/actions/codeowner-action
