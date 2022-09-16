@@ -1,0 +1,14 @@
+name: codeowner-workflow
+on: 
+  pull_request:
+    branches:
+      - main
+jobs:
+  correct-timestamps:
+    runs-on: ubuntu-latest
+    name: Codeowner stuff
+    steps:
+      - name: Debug logging
+        shell: bash
+        run: |
+          echo '${{ toJSON(github) }}'
