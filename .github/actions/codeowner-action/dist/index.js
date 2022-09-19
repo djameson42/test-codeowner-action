@@ -14662,6 +14662,21 @@ const getPullRequestReviews = (url) => {
   });
 };
 
+const ghPRRequest = (url, event, token, comments) => {
+  return axios.post(url + "/reviews", {
+    "event": event,
+    "comments": comments
+  }, 
+  {
+    headers: RAW_ACCEPT_HEADER
+  });
+};
+
+const approvePR = (pullRequest) => {
+  console.log("Approving PR");
+  return ghPRRequest(pullRequest.url, "APPROVE", token);
+};
+
 const payload = github.context.payload;
 console.log(`Event payload: ${JSON.stringify(payload, undefined, 2)}`);
 
@@ -14669,10 +14684,16 @@ console.log(`Event payload: ${JSON.stringify(payload, undefined, 2)}`);
   console.log("starting action");
   const pullRequestReviews = (await getPullRequestReviews(payload.pull_request.url)).data;
 
+  let approvingReviewers = [];
   for (const review of pullRequestReviews) {
     if (review.state === "APPROVED") {
       console.log(`PR has been APPROVED by ${review.user.login}`);
+      approvingReviewers.push(review.user.login);
     }
+  }
+
+  if (approvingReviewers.length > 0 && !approvingReviewers.includes("my-test-bot")) {
+    console.log("PR has not been approved by BOT, approving");
   }
 
   //console.log(pullRequestReviews);
