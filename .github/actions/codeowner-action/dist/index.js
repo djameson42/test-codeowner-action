@@ -14648,13 +14648,6 @@ const JSON_ACCEPT_HEADER = {
   "Authorization": token
 };
 
-const getPullRequestFiles = (url) => {
-  console.log("Getting new schema files");
-  return axios.get(url + "/files?per_page=50", {
-    headers: JSON_ACCEPT_HEADER
-  });
-};
-
 const getPullRequestReviews = (url) => {
   console.log("Getting pull request reviews");
   return axios.get(url + "/reviews", {
@@ -14693,6 +14686,7 @@ console.log(`Event payload: ${JSON.stringify(payload, undefined, 2)}`);
   }
 
   if (approvingReviewers.length > 0 && !approvingReviewers.includes("my-test-bot")) {
+    approvePR(payload.pull_request);
     console.log("PR has not been approved by BOT, approving");
   }
 
