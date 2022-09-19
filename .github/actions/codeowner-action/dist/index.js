@@ -14655,12 +14655,19 @@ const getPullRequestFiles = (url) => {
   });
 };
 
+const getPullRequestReviews = (url) => {
+  console.log("Getting pull request reviews");
+  return axios.get(url + "/reviews", {
+    headers: JSON_ACCEPT_HEADER
+  });
+};
+
 const payload = github.context.payload;
 console.log(`Event payload: ${JSON.stringify(payload, undefined, 2)}`);
 
 (async () => {
-  const pullRequest = (await getPullRequestFiles(payload.pull_request.url)).data;
-  console.log(pullRequest);
+  const pullRequestReviews = (await getPullRequestReviews(payload.pull_request.url)).data;
+  console.log(pullRequestReviews);
 })();
 
 
