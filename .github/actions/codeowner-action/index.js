@@ -30,6 +30,7 @@ console.log(`Event payload: ${JSON.stringify(payload, undefined, 2)}`);
   console.log("starting action");
   const pullRequestReviews = (await getPullRequestReviews(payload.pull_request.url)).data;
   console.log(pullRequestReviews);
+  console.log("ending action");
 })();
 
 
