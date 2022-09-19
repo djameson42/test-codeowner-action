@@ -1,8 +1,6 @@
 name: codeowner-workflow
 on: 
-  pull_request:
-    branches:
-      - main
+  pull_request_review:
 jobs:
   correct-timestamps:
     runs-on: ubuntu-latest
