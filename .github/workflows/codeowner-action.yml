@@ -21,3 +21,5 @@ jobs:
 
       - name: Codeowner action
         uses: ./.github/actions/codeowner-action
+        with:
+          access-token: ${{ secrets.ACTIONS_BOT_PAT }}
