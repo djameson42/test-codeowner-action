@@ -14666,6 +14666,7 @@ const payload = github.context.payload;
 console.log(`Event payload: ${JSON.stringify(payload, undefined, 2)}`);
 
 (async () => {
+  console.log("starting action");
   const pullRequestReviews = (await getPullRequestReviews(payload.pull_request.url)).data;
   console.log(pullRequestReviews);
 })();
