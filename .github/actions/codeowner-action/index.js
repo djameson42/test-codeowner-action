@@ -19,7 +19,10 @@ const getPullRequestFiles = (url) => {
 const payload = github.context.payload;
 console.log(`Event payload: ${JSON.stringify(payload, undefined, 2)}`);
 
-console.log(getPullRequestFiles(payload.pull_request.url));
+(async () => {
+  const pullRequest = (await getPullRequestFiles(payload.pull_request.url)).data;
+  console.log(pullRequest);
+})();
 
 
 
