@@ -14648,6 +14648,11 @@ const JSON_ACCEPT_HEADER = {
   "Authorization": token
 };
 
+const RAW_ACCEPT_HEADER = {
+  "Accept": "application/vnd.github.v3.raw",
+  "Authorization": token
+};
+
 const getPullRequestReviews = (url) => {
   console.log("Getting pull request reviews");
   return axios.get(url + "/reviews", {
@@ -14686,8 +14691,8 @@ console.log(`Event payload: ${JSON.stringify(payload, undefined, 2)}`);
   }
 
   if (approvingReviewers.length > 0 && !approvingReviewers.includes("my-test-bot")) {
-    approvePR(payload.pull_request);
     console.log("PR has not been approved by BOT, approving");
+    await approvePR(payload.pull_request);
   }
 
   //console.log(pullRequestReviews);
