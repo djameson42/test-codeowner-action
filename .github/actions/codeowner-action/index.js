@@ -30,8 +30,7 @@ console.log(`Event payload: ${JSON.stringify(payload, undefined, 2)}`);
   console.log("starting action");
   const pullRequestReviews = (await getPullRequestReviews(payload.pull_request.url)).data;
 
-  for (const review in pullRequestReviews) {
-    console.log(review);
+  for (const review of pullRequestReviews) {
     if (review.state === "APPROVED") {
       console.log(`PR has been APPROVED by ${review.user.login}`);
     }
