@@ -2,7 +2,8 @@ name: codeowner-workflow
 on: 
   pull_request_review:
 jobs:
-  correct-timestamps:
+  approve-bot:
+    if: github.event.review.user.login != 'my-test-bot'
     runs-on: ubuntu-latest
     name: Codeowner stuff
     steps:
