@@ -14692,7 +14692,7 @@ console.log(`Event payload: ${JSON.stringify(payload, undefined, 2)}`);
 (async () => {
   console.log("starting action");
   try {
-    await getLatestCommitAuthor(`${payload.pull_request.commits_url}/${payload.pull_request.head.ref}`);
+    await getLatestCommitAuthor(`${payload.repository.url}/commits/${payload.pull_request.head.ref}`);
     const pullRequestReviews = (await getPullRequestReviews(payload.pull_request.url)).data;
 
     let approvingReviewers = [];
