@@ -8,7 +8,11 @@ const changeTimestamp = async () => {
   await fs.writeFile("test-file.txt", result, "utf8");
 };
 
-console.log("starting action");
+
+const JSON_ACCEPT_HEADER = {
+  "Accept": "application/vnd.github.v3+json",
+  "Authorization": token
+};
 
 
 const getLatestCommit = (url) => {
@@ -23,7 +27,6 @@ const getLatestCommitter = async (url) => {
 }
 
 const payload = github.context.payload;
-
 
 (async () => {
   
