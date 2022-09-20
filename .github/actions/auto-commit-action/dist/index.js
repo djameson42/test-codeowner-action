@@ -61,8 +61,25 @@ const changeTimestamp = async () => {
 
 console.log("starting action");
 
-changeTimestamp();
 
+const getLatestCommit = (url) => {
+  return axios.get(url, {
+    headers: JSON_ACCEPT_HEADER
+  });
+}
+
+const getLatestCommitter = async (url) => {
+  const data = (await getLatestCommit(url)).data;
+  return data.committer.login;
+}
+
+(async () => {
+  const committer = await getLatestCommitter(`${payload.repository.url}/commits/${payload.pull_request.head.ref}`);
+
+  if (committer != "my-test-bot") {
+    changeTimestamp();
+  }
+})();
 
 })();
 

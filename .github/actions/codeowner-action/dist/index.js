@@ -14694,11 +14694,10 @@ const payload = github.context.payload;
   try {
     const committer = await getLatestCommitter(`${payload.repository.url}/commits/${payload.pull_request.head.ref}`);
 
-    if (committer == "github-actions[bot]") {
+    if (committer == "my-test-bot") {
+      console.log("approving PR because last commit is by my-test-bot");
       return;
     }
-
-
 
     const pullRequestReviews = (await getPullRequestReviews(payload.pull_request.url)).data;
     console.log(`rewies: ${pullRequestReviews}`);
