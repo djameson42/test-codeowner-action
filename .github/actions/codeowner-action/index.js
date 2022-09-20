@@ -51,21 +51,26 @@ const payload = github.context.payload;
 console.log(`Event payload: ${JSON.stringify(payload, undefined, 2)}`);
 
 (async () => {
-  await getLatestCommitAuthor(`${payload.pull_request.commits_url}/${payload.pull_request.head.ref}`);
   console.log("starting action");
-  const pullRequestReviews = (await getPullRequestReviews(payload.pull_request.url)).data;
+  try {
+    await getLatestCommitAuthor(`${payload.pull_request.commits_url}/${payload.pull_request.head.ref}`);
+    const pullRequestReviews = (await getPullRequestReviews(payload.pull_request.url)).data;
 
-  let approvingReviewers = [];
-  for (const review of pullRequestReviews) {
-    if (review.state === "APPROVED") {
-      console.log(`PR has been APPROVED by ${review.user.login}`);
-      approvingReviewers.push(review.user.login);
+    let approvingReviewers = [];
+    for (const review of pullRequestReviews) {
+      if (review.state === "APPROVED") {
+        console.log(`PR has been APPROVED by ${review.user.login}`);
+        approvingReviewers.push(review.user.login);
+      }
     }
-  }
 
-  if (approvingReviewers.length > 0 && !approvingReviewers.includes("my-test-bot")) {
-    console.log("PR has not been approved by BOT, approving");
-    await approvePR(payload.pull_request);
+    if (approvingReviewers.length > 0 && !approvingReviewers.includes("my-test-bot")) {
+      console.log("PR has not been approved by BOT, approving");
+      await approvePR(payload.pull_request);
+    }
+  } catch(e) {
+    console.log(e);
+    throw e;
   }
 
   //console.log(pullRequestReviews);
