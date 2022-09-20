@@ -14676,7 +14676,7 @@ const getLatestCommit = (url) => {
   });
 }
 
-const getLatestCommiter = async (url) => {
+const getLatestCommitter = async (url) => {
   const data = (await getLatestCommit(url)).data;
   console.log(`Latest commiter is ${data.committer.login}`);
 }
