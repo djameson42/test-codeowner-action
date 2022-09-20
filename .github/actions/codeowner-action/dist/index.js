@@ -14694,11 +14694,6 @@ const payload = github.context.payload;
   try {
     const committer = await getLatestCommitter(`${payload.repository.url}/commits/${payload.pull_request.head.ref}`);
 
-    if (committer == "my-test-bot") {
-      await approvePR(payload.pull_request);
-      return;
-    }
-
     const pullRequestReviews = (await getPullRequestReviews(payload.pull_request.url)).data;
     console.log(`rewies: ${pullRequestReviews}`);
 
@@ -14709,6 +14704,12 @@ const payload = github.context.payload;
         approvingReviewers.push(review.user.login);
       }
     }
+
+    if (committer == "my-test-bot" && !approvingReviewers.includes("my-test-bot")) {
+      await approvePR(payload.pull_request);
+      return;
+    }
+
 
     if (approvingReviewers.length > 0 && !approvingReviewers.includes("my-test-bot")) {
       console.log("PR has not been approved by BOT, approving");

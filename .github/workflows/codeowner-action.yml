@@ -3,6 +3,7 @@ on:
   pull_request_review:
 jobs:
   approve-bot:
+    if: github.event.review.user.login != 'my-test-bot' || github.event.review.state != 'APPROVED'
     runs-on: ubuntu-latest
     name: Codeowner stuff
     steps:
