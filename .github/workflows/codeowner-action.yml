@@ -1,10 +1,8 @@
 name: codeowner-workflow
 on: 
-  pull_request:
-    branches:
-      - main
+  pull_request_review:
 jobs:
-  correct-timestamps:
+  approve-bot:
     runs-on: ubuntu-latest
     name: Codeowner stuff
     steps:
@@ -21,3 +19,5 @@ jobs:
 
       - name: Codeowner action
         uses: ./.github/actions/codeowner-action
+        with:
+          access-token: ${{ secrets.ACTIONS_BOT_PAT }}
