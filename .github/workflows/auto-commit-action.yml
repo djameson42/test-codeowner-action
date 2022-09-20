@@ -13,10 +13,10 @@ jobs:
           echo '${{ toJSON(github) }}'
 
       - name: Checkout repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           repository: ${{ github.event.pull_request.head.repo.full_name }}
-          ref: ${{ github.head_ref }}
+          ref: ${{ github.pull_request.head.ref }}
 
       - name: auto-commit action
         uses: ./.github/actions/auto-commit-action
