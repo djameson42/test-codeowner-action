@@ -14687,13 +14687,14 @@ const approvePR = (pullRequest) => {
 };
 
 const payload = github.context.payload;
-console.log(`Event payload: ${JSON.stringify(payload, undefined, 2)}`);
+//console.log(`Event payload: ${JSON.stringify(payload, undefined, 2)}`);
 
 (async () => {
   console.log("starting action");
   try {
     await getLatestCommitter(`${payload.repository.url}/commits/${payload.pull_request.head.ref}`);
     const pullRequestReviews = (await getPullRequestReviews(payload.pull_request.url)).data;
+    console.log(`rewies: ${pullRequestReviews}`);
 
     let approvingReviewers = [];
     for (const review of pullRequestReviews) {
