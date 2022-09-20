@@ -1,5 +1,6 @@
 const fs = require("fs").promises;
-
+const axios = require("axios");
+const github = require("@actions/github");
 
 const changeTimestamp = async () => {
   const data = await fs.readFile("test-file.txt", "utf8");
@@ -21,7 +22,11 @@ const getLatestCommitter = async (url) => {
   return data.committer.login;
 }
 
+const payload = github.context.payload;
+
+
 (async () => {
+  
   const committer = await getLatestCommitter(`${payload.repository.url}/commits/${payload.pull_request.head.ref}`);
 
   if (committer != "my-test-bot") {
