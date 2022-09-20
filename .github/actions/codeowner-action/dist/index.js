@@ -14695,7 +14695,7 @@ const payload = github.context.payload;
     const committer = await getLatestCommitter(`${payload.repository.url}/commits/${payload.pull_request.head.ref}`);
 
     if (committer == "my-test-bot") {
-      console.log("approving PR because last commit is by my-test-bot");
+      await approvePR(payload.pull_request);
       return;
     }
 
