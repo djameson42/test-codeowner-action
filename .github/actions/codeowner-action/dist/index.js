@@ -14676,9 +14676,9 @@ const getLatestCommit = (url) => {
   });
 }
 
-const getLatestCommitAuthor = async (url) => {
+const getLatestCommiter = async (url) => {
   const data = (await getLatestCommit(url)).data;
-  console.log(`Latest commit author is ${data.author}`);
+  console.log(`Latest commiter is ${data.committer.login}`);
 }
 
 const approvePR = (pullRequest) => {
@@ -14692,7 +14692,7 @@ console.log(`Event payload: ${JSON.stringify(payload, undefined, 2)}`);
 (async () => {
   console.log("starting action");
   try {
-    await getLatestCommitAuthor(`${payload.repository.url}/commits/${payload.pull_request.head.ref}`);
+    await getLatestCommitter(`${payload.repository.url}/commits/${payload.pull_request.head.ref}`);
     const pullRequestReviews = (await getPullRequestReviews(payload.pull_request.url)).data;
 
     let approvingReviewers = [];
