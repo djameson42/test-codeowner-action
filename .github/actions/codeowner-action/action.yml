@@ -7,3 +7,4 @@ inputs:
   access-token:
     description: Github access token
     required: true
+

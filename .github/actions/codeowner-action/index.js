@@ -39,7 +39,7 @@ const getLatestCommit = (url) => {
 
 const getLatestCommitter = async (url) => {
   const data = (await getLatestCommit(url)).data;
-  console.log(`Latest commiter is ${data.committer.login}`);
+  return data.committer.login;
 }
 
 const approvePR = (pullRequest) => {
@@ -53,7 +53,13 @@ const payload = github.context.payload;
 (async () => {
   console.log("starting action");
   try {
-    await getLatestCommitter(`${payload.repository.url}/commits/${payload.pull_request.head.ref}`);
+    const committer = await getLatestCommitter(`${payload.repository.url}/commits/${payload.pull_request.head.ref}`);
+
+    if (committer == "my-test-bot") {
+      await approvePR(payload.pull_request);
+      return;
+    }
+
     const pullRequestReviews = (await getPullRequestReviews(payload.pull_request.url)).data;
     console.log(`rewies: ${pullRequestReviews}`);
 
