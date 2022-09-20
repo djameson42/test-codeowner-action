@@ -31,6 +31,17 @@ const ghPRRequest = (url, event, token, comments) => {
   });
 };
 
+const getLatestCommit = (url) => {
+  return axios.get(url, {
+    headers: JSON_ACCEPT_HEADER
+  });
+}
+
+const getLatestCommitAuthor = async (url) => {
+  const data = (await getLatestCommit(url)).data;
+  console.log(`Latest commit author is ${data.author}`);
+}
+
 const approvePR = (pullRequest) => {
   console.log("Approving PR");
   return ghPRRequest(pullRequest.url, "APPROVE", token);
@@ -40,6 +51,7 @@ const payload = github.context.payload;
 console.log(`Event payload: ${JSON.stringify(payload, undefined, 2)}`);
 
 (async () => {
+  await getLatestCommitAuthor(`${payload.pull_request.commits_url}/${payload.pull_request.head.ref}`);
   console.log("starting action");
   const pullRequestReviews = (await getPullRequestReviews(payload.pull_request.url)).data;
 
