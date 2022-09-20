@@ -1,6 +1,9 @@
 const fs = require("fs").promises;
 const axios = require("axios");
 const github = require("@actions/github");
+const core = require("@actions/core");
+
+const token = `token ${core.getInput("access-token")}`;
 
 const changeTimestamp = async () => {
   const data = await fs.readFile("test-file.txt", "utf8");
