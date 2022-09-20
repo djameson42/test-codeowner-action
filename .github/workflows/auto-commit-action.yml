@@ -16,7 +16,7 @@ jobs:
         uses: actions/checkout@v3
         with:
           repository: ${{ github.event.pull_request.head.repo.full_name }}
-          ref: test-codeowners
+          ref: ${{ github.event.pull_request.head.ref }}
 
       - name: auto-commit action
         uses: ./.github/actions/auto-commit-action
