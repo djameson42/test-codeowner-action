@@ -1,6 +1,6 @@
 const fs = require("fs").promises;
 const github = require("@actions/github");
-const githubClient = require("../common/github.js");
+const githubClient = require("./github.js");
 
 
 const changeTimestamp = async () => {

@@ -1,7 +1,7 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
-/***/ 8666:
+/***/ 2467:
 /***/ ((__unused_webpack_module, __unused_webpack_exports, __nccwpck_require__) => {
 
 const core = __nccwpck_require__(7664);
@@ -1130,8 +1130,9 @@ exports.context = new Context.Context();
  * @param     token    the repo PAT or GITHUB_TOKEN
  * @param     options  other options to set
  */
-function getOctokit(token, options) {
-    return new utils_1.GitHub(utils_1.getOctokitOptions(token, options));
+function getOctokit(token, options, ...additionalPlugins) {
+    const GitHubWithPlugins = utils_1.GitHub.plugin(...additionalPlugins);
+    return new GitHubWithPlugins(utils_1.getOctokitOptions(token, options));
 }
 exports.getOctokit = getOctokit;
 //# sourceMappingURL=github.js.map
@@ -14694,7 +14695,7 @@ var __webpack_exports__ = {};
 (() => {
 const fs = (__nccwpck_require__(7147).promises);
 const github = __nccwpck_require__(9884);
-const githubClient = __nccwpck_require__(8666);
+const githubClient = __nccwpck_require__(2467);
 
 
 const changeTimestamp = async () => {
