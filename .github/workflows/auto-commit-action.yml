@@ -1,29 +1,29 @@
-#name: auto-commit-workflow
-#on: 
-#  pull_request_review:
-#jobs:
-#  approve-bot:
-#    runs-on: ubuntu-latest
-#    name: auto-commit-workflow
-#    steps:
-#      - name: Debug logging
-#        shell: bash
-#        run: |
-#          echo '${{ toJSON(github) }}'
-#
-#      - name: Checkout repo
-#        uses: actions/checkout@v3
-#        with:
-#          repository: ${{ github.event.pull_request.head.repo.full_name }}
-#          ref: ${{ github.event.pull_request.head.ref }}
-#          ssh-key: ${{ secrets.ACTIONS_TEST_DEPLOY_KEY }}
-#
-#      - name: auto-commit action
-#        uses: ./.github/actions/auto-commit-action
-#        with:
-#          access-token: ${{ secrets.GITHUB_TOKEN }}
-#
-#      - name: Commit changes back to PR
-#        uses: stefanzweifel/git-auto-commit-action@v4
-#
-#
+name: auto-commit-workflow
+on: 
+  pull_request_review:
+jobs:
+  approve-bot:
+    runs-on: ubuntu-latest
+    name: auto-commit-workflow
+    steps:
+      - name: Debug logging
+        shell: bash
+        run: |
+          echo '${{ toJSON(github) }}'
+
+      - name: Checkout repo
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+          ref: ${{ github.event.pull_request.head.ref }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: auto-commit action
+        uses: ./.github/actions/auto-commit-action
+        with:
+          access-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Commit changes back to PR
+        uses: stefanzweifel/git-auto-commit-action@v4
+
+
