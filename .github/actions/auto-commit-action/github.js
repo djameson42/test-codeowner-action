@@ -14,7 +14,7 @@ const RAW_ACCEPT_HEADER = {
   "Authorization": token
 };
 
-const getPullRequestReviews = (url) => {
+module.exports.getPullRequestReviews = (url) => {
   console.log("Getting pull request reviews");
   return axios.get(url + "/reviews", {
     headers: JSON_ACCEPT_HEADER

@@ -2,7 +2,7 @@
 /******/ 	var __webpack_modules__ = ({
 
 /***/ 2467:
-/***/ ((__unused_webpack_module, __unused_webpack_exports, __nccwpck_require__) => {
+/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
 const core = __nccwpck_require__(7664);
 const github = __nccwpck_require__(9884);
@@ -20,7 +20,7 @@ const RAW_ACCEPT_HEADER = {
   "Authorization": token
 };
 
-const getPullRequestReviews = (url) => {
+module.exports.getPullRequestReviews = (url) => {
   console.log("Getting pull request reviews");
   return axios.get(url + "/reviews", {
     headers: JSON_ACCEPT_HEADER
