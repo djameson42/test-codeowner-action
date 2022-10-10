@@ -3,7 +3,6 @@ on:
   pull_request_review:
 jobs:
   approve-bot:
-    if: github.event.review.user.login == 'my-test-bot' && github.event.review.state == 'APPROVED'
     runs-on: ubuntu-latest
     name: auto-commit-workflow
     steps:
@@ -17,17 +16,14 @@ jobs:
         with:
           repository: ${{ github.event.pull_request.head.repo.full_name }}
           ref: ${{ github.event.pull_request.head.ref }}
-          token: ${{ secrets.ACTIONS_BOT_PAT }}
+          ssh-key: ${{ secrets.ACTIONS_TEST_DEPLOY_KEY }}
 
       - name: auto-commit action
         uses: ./.github/actions/auto-commit-action
         with:
-          access-token: ${{ secrets.ACTIONS_BOT_PAT }}
+          access-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Commit changes back to PR
         uses: stefanzweifel/git-auto-commit-action@v4
-        with:
-          commit_user_name: my-test-bot
-          commit_user_email: david.mck.jameson+1@gmail.com
 
 

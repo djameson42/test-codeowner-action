@@ -1,25 +1,26 @@
-name: codeowner-workflow
-on: 
-  pull_request_review:
-jobs:
-  approve-bot:
-    if: github.event.review.user.login != 'my-test-bot' || github.event.review.state != 'APPROVED'
-    runs-on: ubuntu-latest
-    name: Codeowner stuff
-    steps:
-      - name: Debug logging
-        shell: bash
-        run: |
-          echo '${{ toJSON(github) }}'
-
-      - name: Checkout repo
-        uses: actions/checkout@v3
-        with:
-          repository: ${{ github.event.pull_request.head.repo.full_name }}
-          ref: ${{ github.head_ref }}
-          token: ${{ secrets.ACTIONS_BOT_PAT }}
-
-      - name: Codeowner action
-        uses: ./.github/actions/codeowner-action
-        with:
-          access-token: ${{ secrets.ACTIONS_BOT_PAT }}
+#name: codeowner-workflow
+#on: 
+#  pull_request_review:
+#jobs:
+#  approve-bot:
+#    if: github.event.review.user.login != 'my-test-bot' || github.event.review.state != 'APPROVED'
+#    runs-on: ubuntu-latest
+#    name: Codeowner stuff
+#    steps:
+#      - name: Debug logging
+#        shell: bash
+#        run: |
+#          echo '${{ toJSON(github) }}'
+#
+#      - name: Checkout repo
+#        uses: actions/checkout@v3
+#        with:
+#          repository: ${{ github.event.pull_request.head.repo.full_name }}
+#          ref: ${{ github.head_ref }}
+#          token: ${{ secrets.ACTIONS_BOT_PAT }}
+#
+#      - name: Codeowner action
+#        uses: ./.github/actions/codeowner-action
+#        with:
+#          access-token: ${{ secrets.ACTIONS_BOT_PAT }}
+#

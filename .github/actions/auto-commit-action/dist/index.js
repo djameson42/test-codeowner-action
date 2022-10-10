@@ -1,6 +1,61 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
+/***/ 2467:
+/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
+
+const core = __nccwpck_require__(7664);
+const github = __nccwpck_require__(9884);
+const axios = __nccwpck_require__(4287);
+
+const token = `token ${core.getInput("access-token")}`;
+
+const JSON_ACCEPT_HEADER = {
+  "Accept": "application/vnd.github.v3+json",
+  "Authorization": token
+};
+
+const RAW_ACCEPT_HEADER = {
+  "Accept": "application/vnd.github.v3.raw",
+  "Authorization": token
+};
+
+module.exports.getPullRequestReviews = (url) => {
+  console.log("Getting pull request reviews");
+  return axios.get(url + "/reviews", {
+    headers: JSON_ACCEPT_HEADER
+  });
+};
+
+const ghPRRequest = (url, event, token, comments) => {
+  return axios.post(url + "/reviews", {
+    "event": event,
+    "comments": comments
+  }, 
+  {
+    headers: RAW_ACCEPT_HEADER
+  });
+};
+
+const getLatestCommit = (url) => {
+  return axios.get(url, {
+    headers: JSON_ACCEPT_HEADER
+  });
+}
+
+const getLatestCommitter = async (url) => {
+  const data = (await getLatestCommit(url)).data;
+  return data.committer.login;
+}
+
+const approvePR = (pullRequest) => {
+  console.log("Approving PR");
+  return ghPRRequest(pullRequest.url, "APPROVE", token);
+};
+
+
+/***/ }),
+
 /***/ 1870:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
@@ -1075,8 +1130,9 @@ exports.context = new Context.Context();
  * @param     token    the repo PAT or GITHUB_TOKEN
  * @param     options  other options to set
  */
-function getOctokit(token, options) {
-    return new utils_1.GitHub(utils_1.getOctokitOptions(token, options));
+function getOctokit(token, options, ...additionalPlugins) {
+    const GitHubWithPlugins = utils_1.GitHub.plugin(...additionalPlugins);
+    return new GitHubWithPlugins(utils_1.getOctokitOptions(token, options));
 }
 exports.getOctokit = getOctokit;
 //# sourceMappingURL=github.js.map
@@ -14638,11 +14694,9 @@ var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
 (() => {
 const fs = (__nccwpck_require__(7147).promises);
-const axios = __nccwpck_require__(4287);
 const github = __nccwpck_require__(9884);
-const core = __nccwpck_require__(7664);
+const githubClient = __nccwpck_require__(2467);
 
-const token = `token ${core.getInput("access-token")}`;
 
 const changeTimestamp = async () => {
   const data = await fs.readFile("test-file.txt", "utf8");
@@ -14650,33 +14704,31 @@ const changeTimestamp = async () => {
   await fs.writeFile("test-file.txt", result, "utf8");
 };
 
-
-const JSON_ACCEPT_HEADER = {
-  "Accept": "application/vnd.github.v3+json",
-  "Authorization": token
-};
-
-
-const getLatestCommit = (url) => {
-  return axios.get(url, {
-    headers: JSON_ACCEPT_HEADER
-  });
-}
-
-const getLatestCommitter = async (url) => {
-  const data = (await getLatestCommit(url)).data;
-  return data.committer.login;
-}
-
 const payload = github.context.payload;
 
 (async () => {
-  
-  const committer = await getLatestCommitter(`${payload.repository.url}/commits/${payload.pull_request.head.ref}`);
+  console.log("starting action");
+  try {
+    const pullRequestReviews = (await githubClient.getPullRequestReviews(payload.pull_request.url)).data;
+    console.log(`rewies: ${pullRequestReviews}`);
 
-  if (committer != "my-test-bot") {
-    changeTimestamp();
+    let approvingReviewers = [];
+    for (const review of pullRequestReviews) {
+      if (review.state === "APPROVED") {
+        console.log(`PR has been APPROVED by ${review.user.login}`);
+        approvingReviewers.push(review.user.login);
+      }
+    }
+
+    if (approvingReviewers.length > 0 && !approvingReviewers.includes("my-test-bot")) {
+      changeTimestamp();
+    }
+  } catch(e) {
+    console.log(e);
+    throw e;
   }
+  //console.log(pullRequestReviews);
+  console.log("ending action");
 })();
 
 })();
