@@ -1,7 +1,0 @@
-option (xero.schema_file_last_modified) = 1663712772;
-
-random change
-another change
-another change
-another change
-
